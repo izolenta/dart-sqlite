@@ -20,7 +20,7 @@ _createAndInsertEntries(Database db) async {
   await db.execute('INSERT INTO rankings VALUES ("Nice", 38)');
   await db.execute('INSERT INTO rankings VALUES ("Monaco", 41)');
   final count =
-      (await db.query("SELECT COUNT(*) AS count FROM rankings").first).count;
+      (await db.query("SELECT COUNT(*) AS count FROM rankings").first)['count'];
   print('$count teams competing');
 }
 
@@ -35,7 +35,7 @@ _useStatements(Database db) async {
 _inspectResults(Database db) async {
   final subscription = db
       .query('SELECT * FROM rankings ORDER BY points DESC')
-      .listen((Row row) => print('${row.team.padRight(10)} ${row.points}'));
+      .listen((Row row) => print('${row['team'].padRight(10)} ${row['points']}'));
   await subscription.asFuture();
   print('Who\'s the best now?');
 }

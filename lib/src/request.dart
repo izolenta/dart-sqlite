@@ -73,14 +73,15 @@ class Request {
       }
       final List result = rawResult;
       if (rowMetadata == null) {
-        rowMetadata = new RowMetadata(natives.getColumnInfo(_statement));
+        final columns = natives.getColumnInfo(_statement).cast<String>();
+        rowMetadata = new RowMetadata(columns);
       }
       controller.add(new RowImpl(index++, rowMetadata, result));
       return true;
     }
 
     void loop() {
-      timer = new Timer(Duration.ZERO, () {
+      timer = new Timer(Duration.zero, () {
         if (step()) {
           loop();
         }

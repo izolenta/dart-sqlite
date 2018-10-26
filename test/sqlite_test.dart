@@ -85,13 +85,13 @@ void main() {
 
   test('syntax error', _testRunner((db) async {
     expect(() => db.execute('random non sql'),
-        new Throws(new isInstanceOf<sqlite.SqliteSyntaxException>()));
+        throwsA(const TypeMatcher<sqlite.SqliteSyntaxException>()));
   }));
 
   test('column error', _testRunner((db) async {
     final row = await db.query('select 2+2').first;
     expect(() => row['qwerty'],
-        new Throws(new isInstanceOf<sqlite.SqliteException>()));
+        throwsA(const TypeMatcher<sqlite.SqliteException>()));
   }));
 
   test('dynamic getters', _testRunner((db) async {
@@ -101,7 +101,7 @@ void main() {
     expect(inserted, equals(1));
     final rows = await db.query('SELECT * FROM posts').toList();
     expect(rows.length, equals(1));
-    expect(rows[0].title, equals('hello'));
-    expect(rows[0].body, equals('world'));
+    expect(rows[0]['title'], equals('hello'));
+    expect(rows[0]['body'], equals('world'));
   }));
 }
